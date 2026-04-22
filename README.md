@@ -1,111 +1,96 @@
-# Linux Web Server Lab
+# 🔐 Linux Security Lab – SSH Hardening & Monitoring
 
-## 📌 Objective
+## 📌 Overview
 
-Build a basic Linux web server and apply initial security configurations using nginx, UFW firewall, and bash scripting.
+This project demonstrates the implementation of basic Linux security practices focused on SSH hardening, firewall configuration, and monitoring.
+
+The goal is to simulate real-world server protection scenarios using simple and effective tools.
 
 ---
 
-## 🛠️ Technologies Used
+## 🚀 Technologies Used
 
-* Linux (Ubuntu)
-* Nginx (web server)
+* Linux (Ubuntu Server)
+* SSH
 * UFW (Uncomplicated Firewall)
 * Bash scripting
-* Curl
+* Git & GitHub
 
 ---
 
-## ⚙️ What was done
+## 🔧 Implementations
 
-### 1. System Update
+### 🔐 SSH Security
 
-* Updated package lists using apt
+* Disabled root login
+* Configured SSH service
+* Verified active connections
 
-### 2. Nginx Installation
+### 🔥 Firewall Configuration (UFW)
 
-* Installed nginx web server
-* Verified service status using systemctl
+* Enabled firewall
+* Allowed SSH (port 22)
+* Denied unnecessary ports
 
-### 3. Curl Installation
+### 📜 Automation Scripts
 
-* Installed curl for HTTP request testing
-* Used curl to validate local server response
+Located in `/scripts`:
 
-### 4. Firewall Configuration (UFW)
-
-* Installed and enabled UFW
-* Configured default rules:
-
-  * Deny all incoming traffic
-  * Allow all outgoing traffic
-* Allowed only essential ports:
-
-  * SSH (22)
-  * HTTP (80)
+* `secure_setup.sh` → Initial server hardening
+* `monitor_ssh.sh` → Monitor active SSH connections
+* `security_check.sh` → General security status check
 
 ---
 
-## 🔐 Security Implementation
+## 🧪 How to Run
 
-* Minimal exposure approach
-* Only required services are accessible
-* Basic firewall hardening applied
-
----
-
-## 🧪 Testing
-
-### Check nginx status
-
-```
-systemctl status nginx
-```
-
-### Test HTTP response
-
-```
-curl localhost
-```
-
-Expected output:
-
-```
-Welcome to nginx!
+```bash
+chmod +x scripts/*.sh
+./scripts/secure_setup.sh
+./scripts/monitor_ssh.sh
+./scripts/security_check.sh
 ```
 
 ---
 
-## 📂 Project Structure
+## 📊 Skills Demonstrated
 
-* setup.sh → automation script for server setup
-* README.md → project documentation
+* Linux system administration
+* Basic cybersecurity practices
+* Shell scripting automation
+* Firewall management
+* Git workflow (commit, push, versioning)
 
 ---
 
-## 🚀 How to Run
+## 📁 Project Structure
 
 ```
-chmod +x setup.sh
-./setup.sh
+linux-web-server-lab/
+├── scripts/
+│   ├── secure_setup.sh
+│   ├── monitor_ssh.sh
+│   └── security_check.sh
+└── README.md
 ```
 
 ---
 
-## 📈 What I Learned
+## 🎯 Next Steps
 
-* Linux package management with apt
-* Service management with systemctl
-* Firewall configuration with UFW
-* Bash scripting basics
-* HTTP request testing using curl
-* Git version control and commits
+* Implement log analysis
+* Add intrusion detection (Fail2Ban)
+* Automate backups
+* Deploy on cloud (AWS)
 
 ---
 
-## 🔜 Next Steps
+## 👨‍💻 Author
 
-* Log analysis (nginx access logs)
-* System hardening
-* User management
-* Fail2ban implementation
+Gustavo Henrique Oliveira
+
+---
+
+## ⭐ Notes
+
+This lab is part of a hands-on learning journey in Linux, Cloud, and Cybersecurity.
