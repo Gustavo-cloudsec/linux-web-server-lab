@@ -1,96 +1,154 @@
-# 🔐 Linux Security Lab – SSH Hardening & Monitoring
+# 🚀 Linux Web Server & Security Lab
 
-## 📌 Overview
-
-This project demonstrates the implementation of basic Linux security practices focused on SSH hardening, firewall configuration, and monitoring.
-
-The goal is to simulate real-world server protection scenarios using simple and effective tools.
+Hands-on project focused on Linux system administration, basic security hardening, and log analysis using Bash scripting.
 
 ---
 
-## 🚀 Technologies Used
+## 📌 Project Overview
 
-* Linux (Ubuntu Server)
-* SSH
+This project simulates the setup and security hardening of a Linux server environment.
+
+It includes:
+
+* Web server setup
+* Firewall configuration
+* SSH security hardening
+* Log monitoring and attack detection
+* Automation using Bash scripts
+
+---
+
+## 🛠️ Technologies Used
+
+* Linux (Ubuntu)
+* Bash Scripting
+* OpenSSH
 * UFW (Uncomplicated Firewall)
-* Bash scripting
+* Nginx
 * Git & GitHub
 
 ---
 
-## 🔧 Implementations
+## 📂 Project Structure
 
-### 🔐 SSH Security
+```bash
+scripts/
+├── setup.sh              # Initial server setup (nginx, curl)
+├── secure_setup.sh       # SSH hardening and security configs
+├── monitor_ssh.sh        # Check SSH service status
+├── monitor_logs.sh       # Detect failed login attempts
+├── security_check.sh     # General security validation
+```
 
-* Disabled root login
-* Configured SSH service
-* Verified active connections
+---
+
+## 🔐 Implemented Features
+
+### ✅ Server Setup
+
+* System update
+* Nginx installation
+* Curl installation
+* Service validation
 
 ### 🔥 Firewall Configuration (UFW)
 
-* Enabled firewall
-* Allowed SSH (port 22)
-* Denied unnecessary ports
+* Default deny incoming traffic
+* Allow outgoing traffic
+* Allow essential ports:
 
-### 📜 Automation Scripts
+  * SSH (22)
+  * HTTP (80)
 
-Located in `/scripts`:
+### 🔒 SSH Hardening
 
-* `secure_setup.sh` → Initial server hardening
-* `monitor_ssh.sh` → Monitor active SSH connections
-* `security_check.sh` → General security status check
+* Disabled root login
+* Limited authentication attempts
+* Reduced login timeout
 
----
+### 📊 Log Monitoring & Analysis
 
-## 🧪 How to Run
+* Detection of failed SSH login attempts
+* Extraction of source IP addresses
+* Frequency analysis using:
+
+  * `grep`
+  * `awk`
+  * `sort`
+  * `uniq`
+
+Example pipeline:
 
 ```bash
-chmod +x scripts/*.sh
-./scripts/secure_setup.sh
-./scripts/monitor_ssh.sh
-./scripts/security_check.sh
+grep "Failed password" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr
+```
+
+### ⚙️ Automation
+
+* Modular Bash scripts
+* Reusable commands for system administration
+
+---
+
+## ▶️ How to Run
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Gustavo-cloudsec/linux-web-server-lab.git
+cd linux-web-server-lab/scripts
+```
+
+Make scripts executable:
+
+```bash
+chmod +x *.sh
+```
+
+Run a script:
+
+```bash
+./monitor_logs.sh
 ```
 
 ---
 
-## 📊 Skills Demonstrated
+## 🧠 Key Learning Outcomes
 
-* Linux system administration
-* Basic cybersecurity practices
-* Shell scripting automation
-* Firewall management
-* Git workflow (commit, push, versioning)
-
----
-
-## 📁 Project Structure
-
-```
-linux-web-server-lab/
-├── scripts/
-│   ├── secure_setup.sh
-│   ├── monitor_ssh.sh
-│   └── security_check.sh
-└── README.md
-```
+* Linux command-line proficiency
+* Log analysis and security awareness
+* Basic server hardening techniques
+* Bash scripting fundamentals
+* Real-world troubleshooting
 
 ---
 
-## 🎯 Next Steps
+## 🎯 Project Goal
 
-* Implement log analysis
-* Add intrusion detection (Fail2Ban)
-* Automate backups
-* Deploy on cloud (AWS)
+Build a strong foundation in:
+
+* Linux Administration
+* Cybersecurity
+* Cloud Engineering (next step)
+
+---
+
+## 🚀 Next Steps
+
+* Automatic IP blocking using UFW
+* Integrate Fail2Ban
+* Deploy in cloud environment (AWS)
 
 ---
 
 ## 👨‍💻 Author
 
 Gustavo Henrique Oliveira
+Aspiring Cloud & Cybersecurity Professional
 
 ---
 
-## ⭐ Notes
+## 📌 Notes
 
-This lab is part of a hands-on learning journey in Linux, Cloud, and Cybersecurity.
+This project is part of a hands-on learning journey and will continue to evolve with more advanced implementations.
+
