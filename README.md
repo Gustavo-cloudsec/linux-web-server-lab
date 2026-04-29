@@ -1,154 +1,132 @@
-# 🚀 Linux Web Server & Security Lab
+# 🔐 Linux Security Lab – SSH Brute Force Detection & Auto Blocking
 
-Hands-on project focused on Linux system administration, basic security hardening, and log analysis using Bash scripting.
+## 📌 Overview
+
+This project demonstrates a basic **security automation workflow** on Linux by simulating a brute-force attack and automatically blocking the attacker IP using firewall rules.
+
+It covers essential concepts used in **Cybersecurity, Cloud Security, and Blue Team operations**.
 
 ---
 
-## 📌 Project Overview
+## 🎯 Objectives
 
-This project simulates the setup and security hardening of a Linux server environment.
-
-It includes:
-
-* Web server setup
-* Firewall configuration
-* SSH security hardening
-* Log monitoring and attack detection
-* Automation using Bash scripts
+* Simulate SSH brute-force attacks
+* Analyze authentication logs
+* Detect repeated failed login attempts
+* Automatically block malicious IPs using firewall (UFW)
+* Understand basic Incident Detection and Response (IDR)
 
 ---
 
 ## 🛠️ Technologies Used
 
 * Linux (Ubuntu)
-* Bash Scripting
-* OpenSSH
+* Bash scripting
+* SSH
 * UFW (Uncomplicated Firewall)
-* Nginx
-* Git & GitHub
+* System logs (`/var/log/auth.log`)
 
 ---
 
-## 📂 Project Structure
+## ⚙️ How It Works
+
+1. Multiple failed SSH login attempts are generated.
+2. The script scans authentication logs.
+3. It counts failed login attempts per IP.
+4. If the number exceeds a defined threshold:
+
+   * The IP is automatically blocked using UFW.
+
+---
+
+## 📜 Script Example
 
 ```bash
-scripts/
-├── setup.sh              # Initial server setup (nginx, curl)
-├── secure_setup.sh       # SSH hardening and security configs
-├── monitor_ssh.sh        # Check SSH service status
-├── monitor_logs.sh       # Detect failed login attempts
-├── security_check.sh     # General security validation
+#!/bin/bash
+
+LOG_FILE="/var/log/auth.log"
+THRESHOLD=3
+
+echo "Checking failed login attempts..."
+
+grep "Failed password" $LOG_FILE | awk '{print $(NF-3)}' | sort | uniq -c | while read count ip
+do
+  if [ "$count" -gt "$THRESHOLD" ]; then
+    echo "Blocking IP: $ip (Attempts: $count)"
+    sudo ufw deny from $ip
+  fi
+done
 ```
 
 ---
 
-## 🔐 Implemented Features
+## 🧪 Test Performed
 
-### ✅ Server Setup
+* Simulated brute-force attack using:
 
-* System update
-* Nginx installation
-* Curl installation
-* Service validation
+  ```bash
+  ssh usuario@localhost
+  ```
+* Multiple failed login attempts triggered detection.
+* Script successfully blocked:
 
-### 🔥 Firewall Configuration (UFW)
-
-* Default deny incoming traffic
-* Allow outgoing traffic
-* Allow essential ports:
-
-  * SSH (22)
-  * HTTP (80)
-
-### 🔒 SSH Hardening
-
-* Disabled root login
-* Limited authentication attempts
-* Reduced login timeout
-
-### 📊 Log Monitoring & Analysis
-
-* Detection of failed SSH login attempts
-* Extraction of source IP addresses
-* Frequency analysis using:
-
-  * `grep`
-  * `awk`
-  * `sort`
-  * `uniq`
-
-Example pipeline:
-
-```bash
-grep "Failed password" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr
-```
-
-### ⚙️ Automation
-
-* Modular Bash scripts
-* Reusable commands for system administration
+  ```
+  127.0.0.1
+  ```
 
 ---
 
-## ▶️ How to Run
-
-Clone the repository:
+## 🔥 Firewall Result
 
 ```bash
-git clone https://github.com/Gustavo-cloudsec/linux-web-server-lab.git
-cd linux-web-server-lab/scripts
+sudo ufw status
 ```
 
-Make scripts executable:
+Output:
 
-```bash
-chmod +x *.sh
 ```
-
-Run a script:
-
-```bash
-./monitor_logs.sh
+Anywhere DENY 127.0.0.1
 ```
 
 ---
 
-## 🧠 Key Learning Outcomes
+## 🧠 Key Concepts Learned
 
-* Linux command-line proficiency
-* Log analysis and security awareness
-* Basic server hardening techniques
-* Bash scripting fundamentals
-* Real-world troubleshooting
-
----
-
-## 🎯 Project Goal
-
-Build a strong foundation in:
-
-* Linux Administration
-* Cybersecurity
-* Cloud Engineering (next step)
+* Log analysis
+* Intrusion detection
+* Security automation
+* Incident response basics
+* Firewall rule management
 
 ---
 
-## 🚀 Next Steps
+## 🚀 Possible Improvements
 
-* Automatic IP blocking using UFW
-* Integrate Fail2Ban
-* Deploy in cloud environment (AWS)
+* Run script automatically using cron
+* Add email or log alerts
+* Implement IP whitelist
+* Add time-based detection (rate limiting)
+* Store blocked IPs in a separate log file
+
+---
+
+## 📈 Real-World Relevance
+
+This project simulates real-world tools and concepts such as:
+
+* Fail2Ban
+* SIEM systems
+* Security monitoring
+* Cloud security automation
 
 ---
 
 ## 👨‍💻 Author
 
 Gustavo Henrique Oliveira
-Aspiring Cloud & Cybersecurity Professional
 
 ---
 
-## 📌 Notes
+## ⭐ Final Notes
 
-This project is part of a hands-on learning journey and will continue to evolve with more advanced implementations.
-
+This lab is part of a hands-on journey into **Linux, Cloud, and Cybersecurity**, focusing on practical skills used in real-world environments.
