@@ -1,132 +1,95 @@
-# 🔐 Linux Security Lab – SSH Brute Force Detection & Auto Blocking
+# Linux Security Labs
 
-## 📌 Overview
-
-This project demonstrates a basic **security automation workflow** on Linux by simulating a brute-force attack and automatically blocking the attacker IP using firewall rules.
-
-It covers essential concepts used in **Cybersecurity, Cloud Security, and Blue Team operations**.
+This repository documents my hands-on journey through Linux system administration and basic security practices.
+Each lab builds upon the previous one, evolving from simple automation scripts to practical security mechanisms.
 
 ---
 
-## 🎯 Objectives
+## 📌 Project Overview
 
-* Simulate SSH brute-force attacks
-* Analyze authentication logs
-* Detect repeated failed login attempts
-* Automatically block malicious IPs using firewall (UFW)
-* Understand basic Incident Detection and Response (IDR)
+The main goal of this project is to simulate real-world Linux administration tasks, focusing on:
 
----
-
-## 🛠️ Technologies Used
-
-* Linux (Ubuntu)
-* Bash scripting
-* SSH
-* UFW (Uncomplicated Firewall)
-* System logs (`/var/log/auth.log`)
-
----
-
-## ⚙️ How It Works
-
-1. Multiple failed SSH login attempts are generated.
-2. The script scans authentication logs.
-3. It counts failed login attempts per IP.
-4. If the number exceeds a defined threshold:
-
-   * The IP is automatically blocked using UFW.
-
----
-
-## 📜 Script Example
-
-```bash
-#!/bin/bash
-
-LOG_FILE="/var/log/auth.log"
-THRESHOLD=3
-
-echo "Checking failed login attempts..."
-
-grep "Failed password" $LOG_FILE | awk '{print $(NF-3)}' | sort | uniq -c | while read count ip
-do
-  if [ "$count" -gt "$THRESHOLD" ]; then
-    echo "Blocking IP: $ip (Attempts: $count)"
-    sudo ufw deny from $ip
-  fi
-done
-```
-
----
-
-## 🧪 Test Performed
-
-* Simulated brute-force attack using:
-
-  ```bash
-  ssh usuario@localhost
-  ```
-* Multiple failed login attempts triggered detection.
-* Script successfully blocked:
-
-  ```
-  127.0.0.1
-  ```
-
----
-
-## 🔥 Firewall Result
-
-```bash
-sudo ufw status
-```
-
-Output:
-
-```
-Anywhere DENY 127.0.0.1
-```
-
----
-
-## 🧠 Key Concepts Learned
-
+* System automation
 * Log analysis
-* Intrusion detection
-* Security automation
-* Incident response basics
+* Basic security hardening
+* Firewall management
+* Incident response fundamentals
+
+---
+
+## 🔐 Automated SSH Brute-Force Protection
+
+The latest lab implements a simple intrusion prevention mechanism inspired by tools like Fail2Ban.
+
+### How it works
+
+* Monitors authentication logs for failed SSH login attempts
+* Identifies IP addresses exceeding a defined threshold
+* Automatically blocks malicious IPs using UFW (Uncomplicated Firewall)
+* Maintains a whitelist to prevent accidental lockout
+* Logs all actions for traceability
+
+---
+
+## ⚙️ Technologies Used
+
+* Bash scripting
+* Linux (Ubuntu)
+* UFW (firewall)
+* Cron (task automation)
+* Log analysis with `grep`, `awk`, `sort`, and `uniq`
+
+---
+
+## 📂 Project Structure
+
+```bash
+scripts/
+ ├── auto_block.sh
+ ├── update_system.sh
+ └── ...
+```
+
+---
+
+## 🧪 Example Workflow
+
+1. Failed SSH attempts are recorded in system logs
+2. Script parses logs and counts occurrences per IP
+3. If threshold is exceeded:
+
+   * IP is checked against whitelist
+   * If not trusted → firewall rule is applied
+4. Action is logged for auditing
+
+---
+
+## 📈 Skills Demonstrated
+
+* Shell scripting and automation
+* Log parsing and data extraction
+* Basic intrusion detection logic
 * Firewall rule management
+* Troubleshooting and debugging
 
 ---
 
-## 🚀 Possible Improvements
+## 🚀 Future Improvements
 
-* Run script automatically using cron
-* Add email or log alerts
-* Implement IP whitelist
-* Add time-based detection (rate limiting)
-* Store blocked IPs in a separate log file
-
----
-
-## 📈 Real-World Relevance
-
-This project simulates real-world tools and concepts such as:
-
-* Fail2Ban
-* SIEM systems
-* Security monitoring
-* Cloud security automation
+* Automatic unblocking after a time period
+* Integration with `journalctl`
+* Email or alert notifications
+* More advanced pattern detection
 
 ---
 
-## 👨‍💻 Author
+## 📎 Notes
 
-Gustavo Henrique Oliveira
+This project is part of a continuous learning process.
+The focus is not only on functionality, but also on understanding how each component works internally.
 
 ---
 
-## ⭐ Final Notes
+## 👤 Author
 
-This lab is part of a hands-on journey into **Linux, Cloud, and Cybersecurity**, focusing on practical skills used in real-world environments.
+Gustavo Henrique
