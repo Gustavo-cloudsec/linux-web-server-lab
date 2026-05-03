@@ -15,7 +15,11 @@ WHITELIST=("127.0.0.1" "localhost" "189.37.70.149")
 # =========================
 touch "$LOG_FILE"
 
-echo "=== Execução: $(date) ===" >> "$LOG_FILE"
+# Redireciona tudo pro log (stdout + stderr)
+exec >> "$LOG_FILE" 2>&1
+
+echo "=== Execução: $(date) ==="
+echo "Checking failed SSH attempts..."
 
 # =========================
 # COLETA DE IPS SUSPEITOS
@@ -44,15 +48,17 @@ is_whitelisted() {
 for IP in $IPS; do
 
     if is_whitelisted "$IP"; then
-        echo "[IGNORADO] $IP está na whitelist" >> "$LOG_FILE"
+        echo "[IGNORADO] $IP está na whitelist"
         continue
     fi
 
     if sudo ufw status | grep -q "$IP"; then
-        echo "[JA BLOQUEADO] $IP" >> "$LOG_FILE"
+        echo "[JA BLOQUEADO] $IP"
     else
-        echo "[BLOQUEANDO] $IP" >> "$LOG_FILE"
+        echo "[BLOQUEANDO] $IP"
         sudo ufw deny from "$IP"
     fi
 
 done
+
+echo "Execução finalizada."
