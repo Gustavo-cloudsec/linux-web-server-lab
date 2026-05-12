@@ -1,28 +1,23 @@
 #!/bin/bash
 
 # =========================
-# CONFIGURAÇÃO
 # =========================
 LOG_FILE="/home/gustavo/blocker.log"
 AUTH_LOG="/var/log/auth.log"
 THRESHOLD=5
 
-# ⚠️ COLOCA SEU IP AQUI PRA NÃO SE BLOQUEAR
 WHITELIST=("127.0.0.1" "localhost" "189.37.70.149")
 
 # =========================
-# PREPARAÇÃO
 # =========================
 touch "$LOG_FILE"
 
-# Redireciona tudo pro log (stdout + stderr)
 exec >> "$LOG_FILE" 2>&1
 
 echo "=== Execução: $(date) ==="
 echo "Checking failed SSH attempts..."
 
 # =========================
-# COLETA DE IPS SUSPEITOS
 # =========================
 IPS=$(grep "Failed password" "$AUTH_LOG" 2>/dev/null \
     | awk '{print $(NF-3)}' \
@@ -30,7 +25,6 @@ IPS=$(grep "Failed password" "$AUTH_LOG" 2>/dev/null \
     | awk -v t=$THRESHOLD '$1 > t {print $2}')
 
 # =========================
-# FUNÇÃO WHITELIST
 # =========================
 is_whitelisted() {
     local ip="$1"
@@ -43,7 +37,6 @@ is_whitelisted() {
 }
 
 # =========================
-# BLOQUEIO
 # =========================
 for IP in $IPS; do
 
